@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" />
+  <title>{{subject}}</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6fa;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+    .header {
+      background-color: #365CCE;
+      color: #ffffff;
+      text-align: center;
+      padding: 30px;
+      border-bottom: 5px solid #2f54a2;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .content {
+      padding: 30px;
+    }
+    .content h2 {
+      font-size: 22px;
+      color: #333333;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    .content p {
+      font-size: 16px;
+      color: #666666;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    ul {
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+    ul li {
+      font-size: 16px;
+      color: #333333;
+      margin-bottom: 10px;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #365CCE;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #2f54a2;
+    }
+    .footer {
+      background-color: #f0f4f8;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666666;
+    }
+    .footer a {
+      color: #365CCE;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .social-icons {
+      margin-top: 15px;
+    }
+    .social-icons img {
+      width: 24px;
+      margin: 0 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="container"></div>
+    <div class="header">
+      <h1>Welcome to Cancer AI</h1>
+    </div>
+    <div class="content">
+      <h2>Thank you for joining us!</h2>
+      <p>
+        We’re excited to welcome you to Cancer AI, your trusted source for cancer-related information. Our AI is here to answer your questions, provide insights, and guide you through the complexities of cancer care.
+      </p>
+      <p>
+        Here's what you can expect from Cancer AI:
+      </p>
+      <ul>
+        <li><strong>Personalized Answers:</strong> Get accurate responses to your cancer-related questions.</li>
+        <li><strong>Latest Research:</strong> Stay informed with the latest findings and treatment options.</li>
+        <li><strong>Support Resources:</strong> Access a wealth of information on managing cancer, from prevention to recovery.</li>
+      </ul>
+      <a href="{{websiteUrl}}" class="button">Ask Your First Question</a>
+      <p>Looking forward to helping you,<br />The Cancer AI Team</p>
+    </div>
+    <div class="footer">
+      <p>Need help? Contact us at <a href="mailto:{{supportEmail}}">{{supportEmail}}</a> or call us at {{phoneNumber}}.</p>
+      <div class="social-icons">
+        <a href="https://x.com/CancerAITeam"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter"></a>
+        <a href="https://web.facebook.com/CancerAITeam"><img src="https://img.icons8.com/ios-filled/50/000000/facebook.png" alt="Facebook"></a>
+      </div>
+      <p>&copy; 2024 Cancer AI. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>
+
+

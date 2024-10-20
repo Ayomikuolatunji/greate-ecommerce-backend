@@ -1,0 +1,186 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cart API",
+        "version": "1.0.0",
+        "description": "API documentation for cart-related routes"
+    },
+    "paths": {
+        "/api/v1/cart": {
+            "post": {
+                "summary": "Add item to cart",
+                "description": "Adds a product to the authenticated user's cart. If the product already exists in the cart, its quantity will be updated.",
+                "tags": [
+                    "Cart"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "productId": {
+                                        "type": "string",
+                                        "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "required": [
+                                    "productId",
+                                    "quantity"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item added to cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Item added to cart"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while adding the item to the cart"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get user's cart",
+                "description": "Retrieves the authenticated user's cart, including all items in the cart and associated product details.",
+                "tags": [
+                    "Cart"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User's cart retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "a3f6b2c7-6f6f-4d6b-b876-783ca23cd34e"
+                                        },
+                                        "userId": {
+                                            "type": "string",
+                                            "example": "d7e9e1aa-f9b9-478d-8e47-5f80f1e93345"
+                                        },
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "productId": {
+                                                        "type": "string",
+                                                        "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "product": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Laptop"
+                                                            },
+                                                            "price": {
+                                                                "type": "number",
+                                                                "example": 1200.00
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while retrieving the cart"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

@@ -1,0 +1,179 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "E-commerce Admin Dashboard API",
+        "version": "1.0.0",
+        "description": "API documentation for admin dashboard overview routes"
+    },
+    "paths": {
+        "/api/v1/overview/stats": {
+            "get": {
+                "summary": "Get overview statistics",
+                "description": "Fetch statistics including total users, user growth, total products, total sales, and sales growth over the last month.",
+                "tags": [
+                    "Overview"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Overview statistics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "totalUsers": {
+                                            "type": "integer",
+                                            "example": 1500
+                                        },
+                                        "userGrowth": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "totalProducts": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "totalSales": {
+                                            "type": "integer",
+                                            "example": 1200
+                                        },
+                                        "salesGrowth": {
+                                            "type": "integer",
+                                            "example": 150
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Encounter error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/overview/users": {
+            "get": {
+                "summary": "Fetch all users (paginated)",
+                "description": "Fetch all users with pagination, showing id, email, name, and other basic information.",
+                "tags": [
+                    "Overview"
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "description": "Page number for pagination"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        },
+                        "description": "Number of users per page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "user@example.com"
+                                                    },
+                                                    "firstName": {
+                                                        "type": "string",
+                                                        "example": "John"
+                                                    },
+                                                    "lastName": {
+                                                        "type": "string",
+                                                        "example": "Doe"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2023-10-01T12:00:00Z"
+                                                    },
+                                                    "isVerified": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "userType": {
+                                                        "type": "string",
+                                                        "example": "Customer"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "totalUsers": {
+                                            "type": "integer",
+                                            "example": 1500
+                                        },
+                                        "currentPage": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "totalPages": {
+                                            "type": "integer",
+                                            "example": 150
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Encounter error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

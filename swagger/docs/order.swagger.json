@@ -1,0 +1,312 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Order API",
+        "version": "1.0.0",
+        "description": "API documentation for order-related routes"
+    },
+    "paths": {
+        "/api/v1/order": {
+            "post": {
+                "summary": "Place a new order",
+                "description": "Places a new order for the authenticated user based on the items in their cart.",
+                "tags": [
+                    "Order"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "deliveryAddress": {
+                                        "type": "string",
+                                        "example": "1234 Elm Street"
+                                    }
+                                },
+                                "required": [
+                                    "deliveryAddress"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Order successfully placed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "c3f2f6a2-dac1-47c2-9326-5d457f331b9e"
+                                        },
+                                        "userId": {
+                                            "type": "string",
+                                            "example": "7c1f9fba-42f3-4ff2-9220-57a8e4735505"
+                                        },
+                                        "totalPrice": {
+                                            "type": "number",
+                                            "example": 299.99
+                                        },
+                                        "deliveryAddress": {
+                                            "type": "string",
+                                            "example": "1234 Elm Street"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "example": "2024-10-20T14:48:00.000Z"
+                                        },
+                                        "orderItems": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "productId": {
+                                                        "type": "string",
+                                                        "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "price": {
+                                                        "type": "number",
+                                                        "example": 149.99
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Cart is empty or missing required fields",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart is empty"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while placing the order"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/orders": {
+            "get": {
+                "summary": "Get all orders for a user",
+                "description": "Retrieves all orders for the authenticated user.",
+                "tags": [
+                    "Order"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Orders retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "c3f2f6a2-dac1-47c2-9326-5d457f331b9e"
+                                            },
+                                            "userId": {
+                                                "type": "string",
+                                                "example": "7c1f9fba-42f3-4ff2-9220-57a8e4735505"
+                                            },
+                                            "totalPrice": {
+                                                "type": "number",
+                                                "example": 299.99
+                                            },
+                                            "deliveryAddress": {
+                                                "type": "string",
+                                                "example": "1234 Elm Street"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "example": "2024-10-20T14:48:00.000Z"
+                                            },
+                                            "orderItems": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "productId": {
+                                                            "type": "string",
+                                                            "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
+                                                        },
+                                                        "quantity": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "price": {
+                                                            "type": "number",
+                                                            "example": 149.99
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while fetching the orders"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/orders": {
+            "get": {
+                "summary": "Get all orders (Admin)",
+                "description": "Retrieves all orders placed by all users, available to Admins only.",
+                "tags": [
+                    "Order"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Orders retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "c3f2f6a2-dac1-47c2-9326-5d457f331b9e"
+                                            },
+                                            "userId": {
+                                                "type": "string",
+                                                "example": "7c1f9fba-42f3-4ff2-9220-57a8e4735505"
+                                            },
+                                            "totalPrice": {
+                                                "type": "number",
+                                                "example": 299.99
+                                            },
+                                            "deliveryAddress": {
+                                                "type": "string",
+                                                "example": "1234 Elm Street"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "example": "2024-10-20T14:48:00.000Z"
+                                            },
+                                            "orderItems": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "productId": {
+                                                            "type": "string",
+                                                            "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
+                                                        },
+                                                        "quantity": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "price": {
+                                                            "type": "number",
+                                                            "example": 149.99
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while fetching the orders"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

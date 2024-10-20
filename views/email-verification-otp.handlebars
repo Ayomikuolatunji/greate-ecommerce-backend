@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f6f8;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #365CCE;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .token {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #e9f1ff;
+            color: #365CCE;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .note {
+            color: #666666;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Verification</h1>
+        <p>Dear {{email}},</p>
+        <p>Thank you for registering with us. To complete your registration, please use the following one-time verification token:</p>
+        <div class="token">{{token}}</div>
+        <p>This token will expire shortly, so please use it as soon as possible. If you did not register with us, you may ignore this email.</p>
+        <p class="note">Note: For your security, do not share this token with anyone.</p>
+    </div>
+</body>
+</html>
