@@ -24,14 +24,6 @@
                                         "type": "string",
                                         "example": "ayomikuolatunji@gmail.com"
                                     },
-                                    "firstName": {
-                                        "type": "string",
-                                        "example": "John"
-                                    },
-                                    "lastName": {
-                                        "type": "string",
-                                        "example": "Doe"
-                                    },
                                     "password": {
                                         "type": "string",
                                         "example": "P@ssw0rd!"
@@ -39,8 +31,6 @@
                                 },
                                 "required": [
                                     "email",
-                                    "firstName",
-                                    "lastName",
                                     "password"
                                 ]
                             }
