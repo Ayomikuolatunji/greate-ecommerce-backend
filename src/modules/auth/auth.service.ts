@@ -11,6 +11,7 @@ import { EmailValidator } from "../../source/common/services/emailValidator";
 import { InternalServerError } from "../../errors/InternalServerError";
 import { UserEmails } from "../../emails/auth-sender";
 import { ENVIRONMENT_VARIABLES } from "../../configurations/config";
+import { userType } from "@prisma/client";
 
 export class UserAuthentication {
   private notFoundMessage = "Account does not exist";
@@ -135,6 +136,7 @@ export class UserAuthentication {
             },
             { expiresIn: "30d" }
           ),
+          userType: findUser.userType,
           email: findUser.email,
           userId: findUser?.id,
           isVerified: findUser?.isVerified,
