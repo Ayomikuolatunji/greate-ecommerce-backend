@@ -46,7 +46,7 @@ async function main() {
     await prisma.user.delete({ where: { id: adminExist.id } });
     const user = await prisma.user.create({
       data: {
-        email: email,
+        email: email.toLowerCase(),
         password: await hash("123456789"),
         avatar: avatar,
         userType: "Admin",
