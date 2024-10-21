@@ -20,7 +20,7 @@ async function main() {
   `https://ui-avatars.com/api/?name=${initials}&background=${getRandomColor}&color=fff&size=128`;
   const adminExist = await prisma.user.findFirst({ where: { userType: "Admin" } });
   if (!adminExist) {
-    await prisma.user.create({
+   const user=await prisma.user.create({
       data: {
         email: email,
         password: "123456789",
@@ -31,6 +31,7 @@ async function main() {
         lastName: "great",
       },
     });
+    console.log(user);
   }
 
   const placeholderImages = [

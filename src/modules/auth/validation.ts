@@ -3,19 +3,11 @@ import { Joi } from "express-validation";
 export const signupUserValidation = {
   body: Joi.object({
     email: Joi.string().required(),
-    firstName: Joi.string().required(),
     password: Joi.string().required(),
-    lastName: Joi.string().required(),
   }),
 };
 
-export const signupModeratorsValidation = {
-  body: Joi.object({
-    userName: Joi.string().required(),
-    profilePicture: Joi.string(),
-    password: Joi.string().required(),
-  }),
-};
+
 
 export const loginValidation = {
   body: Joi.object({
