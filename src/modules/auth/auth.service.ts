@@ -112,7 +112,7 @@ export class UserAuthentication {
 
       const findUser = await prisma.user.findUnique({
         where: {
-          email: email.trim().toLowerCase(),
+          email: email.toLowerCase(),
         },
       });
 

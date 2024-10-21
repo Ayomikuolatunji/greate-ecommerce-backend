@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 import Chance from "chance";
 const prisma = new PrismaClient();
 
@@ -13,6 +14,15 @@ function getRandomColor(): string {
   return color;
 }
 
+async function getSalt(): Promise<string> {
+  return await bcrypt.genSalt(10);
+}
+
+async function hash(value: string): Promise<string> {
+  const salt = await getSalt();
+  return await bcrypt.hash(value, salt);
+}
+
 async function main() {
   const email = "testAminEmail@gmail.com";
   const initials = `${email[0]}}`.toUpperCase();
@@ -20,10 +30,24 @@ async function main() {
   `https://ui-avatars.com/api/?name=${initials}&background=${getRandomColor}&color=fff&size=128`;
   const adminExist = await prisma.user.findFirst({ where: { userType: "Admin" } });
   if (!adminExist) {
-   const user=await prisma.user.create({
+    const user = await prisma.user.create({
+      data: {
+        email: email.toLowerCase(),
+        password: await hash("123456789"),
+        avatar: avatar,
+        userType: "Admin",
+        isVerified: true,
+        firstName: "Admin",
+        lastName: "great",
+      },
+    });
+    console.log(user);
+  } else {
+    await prisma.user.delete({ where: { id: adminExist.id } });
+    const user = await prisma.user.create({
       data: {
         email: email,
-        password: "123456789",
+        password: await hash("123456789"),
         avatar: avatar,
         userType: "Admin",
         isVerified: true,
@@ -47,8 +71,7 @@ async function main() {
     "https://picsum.photos/640/480?random=10",
   ];
 
-
-  const products:any= [];
+  const products: any = [];
 
   for (let i = 0; i < 30; i++) {
     const product = {
@@ -60,7 +83,7 @@ async function main() {
       size: chance.pickone(["S", "M", "L", "XL"]),
       color: chance.color(),
       quantity: chance.integer({ min: 1, max: 100 }),
-      salesCoverPicture: chance.pickone(placeholderImages), 
+      salesCoverPicture: chance.pickone(placeholderImages),
       subImages: [
         chance.pickone(placeholderImages),
         chance.pickone(placeholderImages),
