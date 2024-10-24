@@ -10,7 +10,7 @@ export class OverviewRoutes {
     this.initOverviewRoutes();
   }
   private initOverviewRoutes() {
-    this.router.get("/overview", this.overviewService.getOverviewStats);
+    this.router.get("/overview/stats", this.overviewService.getOverviewStats);
     this.router.get("/users", this.overviewService.getAllUsers);
   }
   public getRoutes() {

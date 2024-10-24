@@ -13,7 +13,7 @@ export class ProductsRoutes {
 
   private InitProductsRoutes() {
     // Admin route to create a new product
-    this.router.post("/products", this.productService.createProducts);
+    this.router.post("/create-products", this.productService.createProducts);
 
     // User route to get all products
     this.router.get("/products", this.productService.getAllProducts);
