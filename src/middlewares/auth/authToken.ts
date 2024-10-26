@@ -13,7 +13,7 @@ export class AuthMiddleware {
    * @param next
    */
 
-  public JwtAuthentication = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  public   tokenVerification = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.get("Authorization");
       if (!authHeader) {

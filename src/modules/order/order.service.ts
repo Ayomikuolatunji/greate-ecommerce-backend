@@ -4,10 +4,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class OrderService {
-  // Place order
   public placeOrder: RequestHandler = async (req, res, next) => {
     try {
-         const userId = req.authId;
+      const userId = req.authId;
       const { deliveryAddress } = req.body;
       const cart = await prisma.cart.findFirst({
         where: { userId: userId! },
@@ -18,16 +17,13 @@ export class OrderService {
         return res.status(400).json({ message: "Cart is empty" });
       }
 
-      // Calculate total price
       const totalPrice = cart.items.reduce(
         (sum, item) => sum + item.product.price * item.quantity,
         0
       );
-
-      // Create the order
       const order = await prisma.order.create({
         data: {
-          userId:userId!,
+          userId: userId!,
           totalPrice,
           deliveryAddress,
           orderItems: {
@@ -47,7 +43,6 @@ export class OrderService {
     }
   };
 
-  // Get all orders for the user
   public getUserOrders: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.authId;
@@ -61,7 +56,6 @@ export class OrderService {
     }
   };
 
-  // Get all orders for the admin
   public getAllOrders: RequestHandler = async (req, res, next) => {
     try {
       const orders = await prisma.order.findMany({

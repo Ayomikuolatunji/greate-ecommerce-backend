@@ -49,7 +49,6 @@ export class UserAuthentication {
           password: userFields.password,
           avatar: userFields.avatar,
           userType: "User",
-          isVerified: true,
         },
       });
       if (!createStudent) {
@@ -109,15 +108,12 @@ export class UserAuthentication {
     try {
       const email = req.body.email as string;
       const password = req.body.password;
-
       const findUser = await prisma.user.findUnique({
         where: {
           email: email.toLowerCase(),
         },
       });
-
       if (!findUser) throw new NotFoundError("User not found");
-
       const hash = await this.bcryptHashingService.verify(password, findUser?.password as string);
       if (!hash) {
         throw new BadRequestError("Invalid password");
@@ -125,7 +121,6 @@ export class UserAuthentication {
       if (!findUser.isVerified) {
         throw new BadRequestError("Please, verify your email, before you can login");
       }
-
       res.status(StatusCodes.OK).json({
         message: "Login successfully",
         user_credentials: {
@@ -299,25 +294,19 @@ export class UserAuthentication {
   public forgetPasswordOtp: RequestHandler = async (req, res, next) => {
     try {
       const email = req.body.email as string;
-
-      // Validate the email format
       if (!this.emailValidator.isEmailValid(email)) {
         throw new BadRequestError("Invalid email format");
       }
-
       const findUser = await prisma.user.findUnique({
         where: {
           email: email.toLowerCase(),
         },
       });
-
       if (!findUser) {
         throw new NotFoundError("User Account not found");
       }
-
       const token = crypto.randomBytes(20).toString("hex");
       const tokenExpirationTime = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiration
-
       await prisma.user.update({
         where: {
           email: email.toLowerCase(),
@@ -327,11 +316,10 @@ export class UserAuthentication {
           tokenExpirationTime: tokenExpirationTime,
         },
       });
-
       const resetLink =
         ENVIRONMENT_VARIABLES.NODE_ENV === "development"
           ? `http://localhost:3000/auth/reset-password?code=${token}&email=${findUser.email}`
-          : `http://localhost:3000/auth/reset-password?code=${token}`;
+          : `https://www.4tk.shop/auth/reset-password?code=${token}`;
 
       await this.email.blastUserForgotTokenMessage(
         {

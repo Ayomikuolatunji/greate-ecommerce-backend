@@ -30,7 +30,7 @@ async function main() {
   `https://ui-avatars.com/api/?name=${initials}&background=${getRandomColor}&color=fff&size=128`;
   const adminExist = await prisma.user.findFirst({ where: { userType: "Admin" } });
   if (!adminExist) {
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: email.toLowerCase(),
         password: await hash("123456789"),
@@ -41,10 +41,9 @@ async function main() {
         lastName: "great",
       },
     });
-    console.log(user);
   } else {
     await prisma.user.delete({ where: { id: adminExist.id } });
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: email.toLowerCase(),
         password: await hash("123456789"),
@@ -55,7 +54,6 @@ async function main() {
         lastName: "great",
       },
     });
-    console.log(user);
   }
 
   const placeholderImages = [

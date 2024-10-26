@@ -1,13 +1,17 @@
 import { RequestHandler } from "express";
 import prisma from "../../database/PgDB";
+import { BadRequestError } from "../../errors";
 
 export class CartService {
   public addToCart: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.authId;
+      if (!userId) {
+        throw new BadRequestError("UserId is required");
+      }
       const { productId, quantity } = req.body;
       let cart = await prisma.cart.findFirst({
-        where: { userId: userId! },
+        where: { userId: userId },
         include: { items: true },
       });
       if (!cart) {
@@ -42,7 +46,6 @@ export class CartService {
     }
   };
 
-  // Get user's cart
   public getUserCart: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.authId;
