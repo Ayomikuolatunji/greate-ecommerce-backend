@@ -6,7 +6,7 @@
         "description": "API documentation for order-related routes"
     },
     "paths": {
-        "/api/v1/order": {
+        "/api/v1/orders": {
             "post": {
                 "summary": "Place a new order",
                 "description": "Places a new order for the authenticated user based on the items in their cart.",
@@ -125,7 +125,7 @@
                 }
             }
         },
-        "/api/v1/orders": {
+        "/api/v1/get-orders": {
             "get": {
                 "summary": "Get all orders for a user",
                 "description": "Retrieves all orders for the authenticated user.",

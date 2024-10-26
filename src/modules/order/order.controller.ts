@@ -22,7 +22,7 @@ export class OrderRoutes {
     );
 
     this.router.get(
-      "/orders",
+      "/get-orders",
       this.authMiddleware.tokenVerification,
       this.orderService.getUserOrders
     );
