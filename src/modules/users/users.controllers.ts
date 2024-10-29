@@ -15,7 +15,7 @@ export class UserRoutes {
   }
 
   private InitCartRoutes() {
-    this.router.post(
+    this.router.get(
       "/user/profile",
       this.authMiddleware.tokenVerification,
       this.userService.getUserProfile
