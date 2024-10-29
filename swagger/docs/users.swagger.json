@@ -1,0 +1,163 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User Profile API",
+        "version": "1.0.0",
+        "description": "API documentation for user profile-related routes"
+    },
+    "paths": {
+        "/api/v1/user/profile": {
+            "get": {
+                "summary": "Get user profile",
+                "description": "Retrieves the authenticated user's profile details.",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User profile retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "studentId": {
+                                            "type": "string",
+                                            "example": "123456"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "user@example.com"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "example": "hashedpassword"
+                                        },
+                                        "avatar": {
+                                            "type": "string",
+                                            "example": "https://example.com/avatar.jpg"
+                                        },
+                                        "profileCompleted": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "tokenExpirationTime": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-08-01T12:34:56Z"
+                                        },
+                                        "otp": {
+                                            "type": "string",
+                                            "example": "123456"
+                                        },
+                                        "emailVerification": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "dateOfBirth": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2000-01-01"
+                                        },
+                                        "userName": {
+                                            "type": "string",
+                                            "example": "johndoe"
+                                        },
+                                        "firstName": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "lastName": {
+                                            "type": "string",
+                                            "example": "Doe"
+                                        },
+                                        "institution": {
+                                            "type": "string",
+                                            "example": "University of Example"
+                                        },
+                                        "studentType": {
+                                            "type": "string",
+                                            "example": "Undergraduate"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Male"
+                                        },
+                                        "department": {
+                                            "type": "string",
+                                            "example": "Computer Science"
+                                        },
+                                        "level": {
+                                            "type": "string",
+                                            "example": "200"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "active"
+                                        },
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-07-01T10:00:00Z"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-01T10:00:00Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User profile not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User profile not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while retrieving the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

@@ -61,15 +61,6 @@ export class OverviewService {
       const users = await prisma.user.findMany({
         skip,
         take: limit,
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          createdAt: true,
-          isVerified: true,
-          userType: true,
-        },
       });
 
       const totalUsers = await prisma.user.count();

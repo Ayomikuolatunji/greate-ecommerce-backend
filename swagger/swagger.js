@@ -5,6 +5,10 @@ const productSwaggerDocument = require("./docs/product.swagger.json");
 const orderSwaggerDocument = require("./docs/order.swagger.json");
 const carSwaggerDocument = require("./docs/cart.swagger.json");
 const overviewSwaggerDocument = require("./docs/overview.swagger.json");
+const usersSwaggerDocument = require("./docs/users.swagger.json");
+
+
+
 
 const combinedSwagger = {
   openapi: "3.0.0",
@@ -18,7 +22,8 @@ const combinedSwagger = {
     ...productSwaggerDocument.paths,
     ...orderSwaggerDocument.paths,
     ...carSwaggerDocument.paths,
-    ...overviewSwaggerDocument.paths
+    ...overviewSwaggerDocument.paths,
+    ...usersSwaggerDocument.paths
   }
 };
 
