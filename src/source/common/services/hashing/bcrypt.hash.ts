@@ -20,7 +20,7 @@ export class BcryptHashingService implements IHashingService {
   }
 
   generateAvatar(email: string): string {
-    const initials = `${email[0]}}`.toUpperCase();
+    const initials = `${email[0]}`.toUpperCase();
     const backgroundColor = this.getRandomColor();
     return `https://ui-avatars.com/api/?name=${initials}&background=${backgroundColor}&color=fff&size=128`;
   }
