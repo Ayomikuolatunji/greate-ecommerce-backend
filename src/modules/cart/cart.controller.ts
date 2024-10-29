@@ -17,6 +17,11 @@ export class CartRoutes {
   private InitCartRoutes() {
     this.router.post("/cart", this.authMiddleware.tokenVerification, this.cartService.addToCart);
     this.router.get("/cart", this.authMiddleware.tokenVerification, this.cartService.getUserCart);
+    this.router.delete(
+      "/cart/item/:itemId",
+      this.authMiddleware.tokenVerification,
+      this.cartService.deleteCartItem
+    );
   }
 
   public getRoutes() {

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import prisma from "../../database/PgDB";
-import { BadRequestError } from "../../errors";
+import { BadRequestError, NotFoundError } from "../../errors";
 
 export class CartService {
   public addToCart: RequestHandler = async (req, res, next) => {
@@ -64,4 +64,35 @@ export class CartService {
       next(error);
     }
   };
+  public deleteCartItem: RequestHandler = async (req, res, next) => {
+    try {
+      const userId = req.authId;
+      const { itemId } = req.params;
+
+      const cart = await prisma.cart.findFirst({
+        where: { userId },
+      });
+
+      if (!cart) {
+        throw new NotFoundError("Cart not found");
+      }
+
+      const item = await prisma.cartItem.findUnique({
+        where: { id: itemId },
+      });
+
+      if (!item || item.cartId !== cart.id) {
+        throw new NotFoundError("Cart item not found");
+      }
+
+      await prisma.cartItem.delete({
+        where: { id: itemId },
+      });
+
+      res.status(200).json({ message: "Item removed from cart" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
+
