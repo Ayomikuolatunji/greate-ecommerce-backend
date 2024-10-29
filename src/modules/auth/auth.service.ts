@@ -319,6 +319,8 @@ export class UserAuthentication {
       const resetLink =
         ENVIRONMENT_VARIABLES.NODE_ENV === "development"
           ? `http://localhost:3000/auth/reset-password?code=${token}&email=${findUser.email}`
+          : ENVIRONMENT_VARIABLES.NODE_ENV === "staging"
+          ? `https://www.4tk.shop/auth/reset-password?code=${token}`
           : `https://www.4tk.shop/auth/reset-password?code=${token}`;
 
       await this.email.blastUserForgotTokenMessage(
