@@ -11,7 +11,7 @@ config({ path: envPath });
 export const ENVIRONMENT_VARIABLES = cleanEnv(process.env, {
   // Server
   NODE_ENV: str({
-    choices: ["development", "production"],
+    choices: ["development", "production", "staging"],
     default: "development",
   }),
 
