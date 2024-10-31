@@ -35,6 +35,7 @@ export class OverviewRoutes {
     this.router.get(
       "/users",
       this.authMiddleware.tokenVerification,
+      
       this.overviewService.getAllUsers
     );
   }

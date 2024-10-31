@@ -13,7 +13,7 @@ export class AuthMiddleware {
    * @param next
    */
 
-  public   tokenVerification = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  public tokenVerification = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.get("Authorization");
       if (!authHeader) {
@@ -30,7 +30,7 @@ export class AuthMiddleware {
         return res.status(401).json({ message: "Authentication failed" });
       }
       req.authId = decodedToken.authId;
-      //   req.userType = decodedToken.role;
+      req.userType = decodedToken.role;
       next();
     } catch (error) {
       next(error);

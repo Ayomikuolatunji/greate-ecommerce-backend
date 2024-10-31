@@ -12,7 +12,6 @@ import { InternalServerError } from "../../errors/InternalServerError";
 import { UserEmails } from "../../emails/auth-sender";
 import { ENVIRONMENT_VARIABLES } from "../../configurations/config";
 
-
 export class UserAuthentication {
   private notFoundMessage = "Account does not exist";
   private utils = new ServerUtils();
@@ -128,6 +127,7 @@ export class UserAuthentication {
             {
               email,
               authId: findUser?.id as string,
+              role: findUser.userType,
             },
             { expiresIn: "30d" }
           ),
