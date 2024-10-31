@@ -11,14 +11,17 @@ import {
   resetPasswordValidation,
   completeProfileRegistrationValidation,
 } from "./validation";
+import { AuthMiddleware } from "../../middlewares/auth/authToken";
 
 export class AuthRoutes {
   private router: Router;
   private auth = new UserAuthentication();
+  private authMiddleware: AuthMiddleware;
 
   constructor() {
     this.router = Router();
     this.InitAuthRoute();
+    this.authMiddleware = new AuthMiddleware();
   }
 
   private InitAuthRoute() {
@@ -37,11 +40,12 @@ export class AuthRoutes {
     );
     this.router.post("/request-otp", validate(emailValidation, {}, {}), this.auth.requestOtp);
     this.router.post("/verify-otp", validate(emailOtpValidation, {}, {}), this.auth.verifyOTP);
-     this.router.post(
-       "/complete-profile-registration",
-       validate(completeProfileRegistrationValidation, {}, {}),
-       this.auth.completeProfileRegistration
-     );
+    this.router.post(
+      "/complete-profile-registration",
+      this.authMiddleware.tokenVerification,
+      validate(completeProfileRegistrationValidation, {}, {}),
+      this.auth.completeProfileRegistration
+    );
     this.router.post(
       "/reset-password",
       validate(resetPasswordValidation, {}, {}),
