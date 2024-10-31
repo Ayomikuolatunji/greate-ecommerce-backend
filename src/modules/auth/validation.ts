@@ -29,7 +29,13 @@ export const emailOtpValidation = {
     otp: Joi.string().required(),
   }),
 };
-
+export const completeProfileRegistrationValidation = {
+  body: Joi.object({
+    lastName: Joi.string().required(),
+    firstName: Joi.string().required(),
+    gender: Joi.string().required(),
+  }),
+};
 export const forgottenPasswordValidation = {
   body: Joi.object({
     password: Joi.string().required(),

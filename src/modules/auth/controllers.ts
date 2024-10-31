@@ -9,6 +9,7 @@ import {
   signupUserValidation,
   emailValidation,
   resetPasswordValidation,
+  completeProfileRegistrationValidation,
 } from "./validation";
 
 export class AuthRoutes {
@@ -36,7 +37,11 @@ export class AuthRoutes {
     );
     this.router.post("/request-otp", validate(emailValidation, {}, {}), this.auth.requestOtp);
     this.router.post("/verify-otp", validate(emailOtpValidation, {}, {}), this.auth.verifyOTP);
-     this.router.post("/complete-profile-registration", validate(emailOtpValidation, {}, {}), this.auth.completeProfileRegistration);
+     this.router.post(
+       "/complete-profile-registration",
+       validate(completeProfileRegistrationValidation, {}, {}),
+       this.auth.completeProfileRegistration
+     );
     this.router.post(
       "/reset-password",
       validate(resetPasswordValidation, {}, {}),
