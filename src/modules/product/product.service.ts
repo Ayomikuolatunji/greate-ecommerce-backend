@@ -75,23 +75,7 @@ export class ProductService {
   public searchProducts: RequestHandler = async (req, res, next) => {
     try {
       const { query } = req.query;
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
-      const skip = (page - 1) * limit;
-      if (!query) {
-        return res.status(400).json({ message: "Search query is required" });
-      }
       const products = await prisma.product.findMany({
-        where: {
-          OR: [
-            { name: { contains: query as string, mode: "insensitive" } },
-            { description: { contains: query as string, mode: "insensitive" } },
-          ],
-        },
-        skip,
-        take: limit,
-      });
-      const totalProducts = await prisma.product.count({
         where: {
           OR: [
             { name: { contains: query as string, mode: "insensitive" } },
@@ -101,9 +85,6 @@ export class ProductService {
       });
       res.status(200).json({
         products,
-        totalProducts,
-        currentPage: page,
-        totalPages: Math.ceil(totalProducts / limit),
       });
     } catch (error) {
       next(error);
