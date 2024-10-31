@@ -75,7 +75,10 @@ export class UserAuthentication {
   };
 
   public completeProfileRegistration: RequestHandler = async (req, res, next) => {
-    const userId = req.authId;
+    const userId = req.params.id;
+    if(!userId){
+        throw new Error("UserId is required");
+    }
     const { firstName, lastName, gender } = req.body;
     try {
       const existingUser = await prisma.user.findUnique({

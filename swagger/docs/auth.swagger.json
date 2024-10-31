@@ -205,7 +205,7 @@
                 }
             }
         },
-        "/api/v1/complete-profile-registration": {
+        "/api/v1/complete-profile-registration/:id": {
             "post": {
                 "summary": "Complete profile registration",
                 "description": "Updates the user's profile information after email verification is completed.",
