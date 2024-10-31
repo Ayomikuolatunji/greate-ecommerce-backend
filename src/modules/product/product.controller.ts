@@ -23,6 +23,8 @@ export class ProductsRoutes {
     this.router.get("/products", this.productService.getAllProducts);
 
     this.router.get("/products/:id", this.productService.getProductById);
+
+    this.router.get("/products/search", this.productService.searchProducts);
   }
 
   public getRoutes() {

@@ -9,21 +9,22 @@ datasource db {
 }
 
 model User {
-    id                  String    @id @default(uuid())
-    email               String    @unique
+    id                  String        @id @default(uuid())
+    email               String        @unique
     password            String
     userType            userType
     firstName           String?
     lastName            String?
     gender              String?
     avatar              String?
-    isVerified          Boolean   @default(false)
+    isVerified          Boolean       @default(false)
     tokenExpirationTime DateTime?
     otp                 String?
-    createdAt           DateTime  @default(now())
-    updatedAt           DateTime  @default(now())
-    Cart                Cart[]
-    Order               Order[]
+    createdAt           DateTime      @default(now())
+    updatedAt           DateTime      @default(now())
+    carts               Cart[]
+    orders              Order[]
+    transactions        Transaction[]
 }
 
 model Product {
@@ -35,11 +36,11 @@ model Product {
     color             String
     quantity          Int
     salesCoverPicture String
-    subImages         String[] 
+    subImages         String[]
     createdAt         DateTime    @default(now())
     updatedAt         DateTime    @default(now())
-    CartItem          CartItem[]
-    OrderItem         OrderItem[]
+    cartItems         CartItem[]
+    orderItems        OrderItem[]
 }
 
 enum userType {
@@ -56,8 +57,6 @@ model Cart {
     updatedAt DateTime   @default(now())
 }
 
-
-
 model CartItem {
     id        String   @id @default(uuid())
     cartId    String
@@ -70,15 +69,16 @@ model CartItem {
 }
 
 model Order {
-    id              String      @id @default(uuid())
+    id              String        @id @default(uuid())
     userId          String
-    user            User        @relation(fields: [userId], references: [id])
+    user            User          @relation(fields: [userId], references: [id])
     orderItems      OrderItem[]
     totalPrice      Float
     deliveryAddress String
-    status          OrderStatus @default(PENDING)
-    createdAt       DateTime    @default(now())
-    updatedAt       DateTime    @default(now())
+    status          OrderStatus   @default(PENDING)
+    createdAt       DateTime      @default(now())
+    updatedAt       DateTime      @default(now())
+    transactions    Transaction[]
 }
 
 model OrderItem {
@@ -90,6 +90,26 @@ model OrderItem {
     quantity  Int
     price     Float
     createdAt DateTime @default(now())
+}
+
+model Transaction {
+    id            String            @id @default(uuid())
+    orderId       String
+    txref         String
+    order         Order             @relation(fields: [orderId], references: [id])
+    userId        String
+    user          User              @relation(fields: [userId], references: [id])
+    amount        Float
+    status        TransactionStatus @default(PENDING)
+    paymentMethod String
+    createdAt     DateTime          @default(now())
+    updatedAt     DateTime          @default(now())
+}
+
+enum TransactionStatus {
+    PENDING
+    SUCCESS
+    FAILED
 }
 
 enum OrderStatus {

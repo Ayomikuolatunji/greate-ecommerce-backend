@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { ENVIRONMENT_VARIABLES } from "../../configurations/config";
+import axios from "axios";
+import { BadRequestError } from "../../errors";
+import prisma from "../../database/PgDB";
 
 export class OrderService {
   public placeOrder: RequestHandler = async (req, res, next) => {
@@ -62,6 +63,65 @@ export class OrderService {
         include: { user: true, orderItems: { include: { product: true } } },
       });
       res.status(200).json(orders);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public makePayment: RequestHandler = async (req, res, next) => {
+    const authId = req.authId;
+    if (!req.body.orderId) {
+      throw new BadRequestError("orderId is required");
+    }
+    const order = await prisma.order.findUnique({
+      where: {
+        id: req.body.orderId,
+      },
+    });
+    if (!order) {
+      throw new BadRequestError("Order not found");
+    }
+    const user = await prisma.user.findUnique({
+      where: {
+        id: authId,
+      },
+    });
+    if (!user) {
+      throw new BadRequestError("user not found");
+    }
+    const makePayment = await axios({
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${ENVIRONMENT_VARIABLES.PAYSTACK_SECRET_KEY}`,
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        email: user.email,
+        amount: order.totalPrice * 100,
+        callback_url: "http://localhost:5173/",
+        currency: "NGN",
+        transaction_charge: 10,
+        metadata: {
+          userId: user.id,
+          orderId: order.id,
+        },
+      }),
+      url: "https://api.paystack.co/transaction/initialize",
+    });
+
+    res.status(200).json(makePayment);
+  };
+  public deleteOrder: RequestHandler = async (req, res, next) => {
+    try {
+      const orderId = req.params.id;
+      await prisma.orderItem.deleteMany({
+        where: { orderId },
+      });
+      await prisma.order.delete({
+        where: { id: orderId },
+      });
+
+      res.status(200).json({ message: "Order and its items deleted successfully" });
     } catch (error) {
       next(error);
     }

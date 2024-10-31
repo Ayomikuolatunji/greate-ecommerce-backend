@@ -22,9 +22,9 @@ export const ENVIRONMENT_VARIABLES = cleanEnv(process.env, {
   GOOGLE_REFRESH_TOKEN: str(),
   G_MAIL: str(),
 
-
   // JWT environment variables
   JWT_SECRET_KEY: str(),
   // Server environment variables
+  PAYSTACK_SECRET_KEY: str(),
   PORT: str(),
 });

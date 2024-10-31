@@ -118,36 +118,45 @@
                 }
             }
         },
-        "/api/v1/products": {
+        "/api/v1/products/search": {
             "get": {
-                "summary": "Get all products",
-                "description": "Fetches a list of products with pagination.",
                 "tags": [
                     "Products"
                 ],
+                "summary": "Search for products by name or description",
+                "description": "Search products by a query string, with optional pagination",
                 "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Search term to look up products by name or description."
+                    },
                     {
                         "name": "page",
                         "in": "query",
-                        "required": false,
                         "schema": {
                             "type": "integer",
-                            "example": 1
-                        }
+                            "default": 1
+                        },
+                        "description": "Page number for pagination. Defaults to 1."
                     },
                     {
                         "name": "limit",
                         "in": "query",
-                        "required": false,
                         "schema": {
                             "type": "integer",
-                            "example": 10
-                        }
+                            "default": 10
+                        },
+                        "description": "Number of results per page. Defaults to 10."
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list of products",
+                        "description": "A list of matching products",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -161,23 +170,23 @@
                                         },
                                         "totalProducts": {
                                             "type": "integer",
-                                            "example": 100
+                                            "description": "Total number of matching products"
                                         },
                                         "currentPage": {
                                             "type": "integer",
-                                            "example": 1
+                                            "description": "Current page of the results"
                                         },
                                         "totalPages": {
                                             "type": "integer",
-                                            "example": 10
+                                            "description": "Total pages available"
                                         }
                                     }
                                 }
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal server error",
+                    "400": {
+                        "description": "Invalid request due to missing search query",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -185,7 +194,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Encounter error"
+                                            "example": "Search query is required"
                                         }
                                     }
                                 }
@@ -194,74 +203,151 @@
                     }
                 }
             }
-        },
-        "/api/v1/products/{id}": {
-            "get": {
-                "summary": "Get a product by ID",
-                "description": "Fetches a single product by its ID, along with related products.",
-                "tags": [
-                    "Products"
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+    },
+    "/api/v1/products": {
+        "get": {
+            "summary": "Get all products",
+            "description": "Fetches a list of products with pagination.",
+            "tags": [
+                "Products"
+            ],
+            "parameters": [
+                {
+                    "name": "page",
+                    "in": "query",
+                    "required": false,
+                    "schema": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "required": false,
+                    "schema": {
+                        "type": "integer",
+                        "example": 10
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "A list of products",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "products": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "totalProducts": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "currentPage": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "totalPages": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                }
+                            }
                         }
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product details and related products",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "product": {
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Encounter error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/api/v1/products/{id}": {
+        "get": {
+            "summary": "Get a product by ID",
+            "description": "Fetches a single product by its ID, along with related products.",
+            "tags": [
+                "Products"
+            ],
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Product details and related products",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "product": {
+                                        "$ref": "#/components/schemas/Product"
+                                    },
+                                    "relatedProducts": {
+                                        "type": "array",
+                                        "items": {
                                             "$ref": "#/components/schemas/Product"
-                                        },
-                                        "relatedProducts": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Product"
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Product not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Product not found"
-                                        }
+                    }
+                },
+                "404": {
+                    "description": "Product not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Product not found"
                                     }
                                 }
                             }
                         }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Encounter error"
-                                        }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Encounter error"
                                     }
                                 }
                             }

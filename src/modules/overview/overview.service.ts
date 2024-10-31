@@ -1,16 +1,10 @@
 import { RequestHandler } from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../../database/PgDB";
 
 export class OverviewService {
-  // Method to get overview statistics
   public getOverviewStats: RequestHandler = async (req, res, next) => {
     try {
-      // Fetch total number of users
       const totalUsers = await prisma.user.count();
-
-      // Fetch the number of new users in the last month
       const lastMonth = new Date();
       lastMonth.setMonth(lastMonth.getMonth() - 1);
       const usersLastMonth = await prisma.user.count({
@@ -20,16 +14,9 @@ export class OverviewService {
           },
         },
       });
-
       const userGrowth = totalUsers - usersLastMonth;
-
-      // Fetch total number of products
       const totalProducts = await prisma.product.count();
-
-      // Fetch total number of sales (assuming you have an Order model)
       const totalSales = await prisma.order.count();
-
-      // Fetch sales growth in the last month (using createdAt date in Orders)
       const salesLastMonth = await prisma.order.count({
         where: {
           createdAt: {
@@ -38,7 +25,6 @@ export class OverviewService {
         },
       });
       const salesGrowth = totalSales - salesLastMonth;
-
       res.status(200).json({
         totalUsers,
         userGrowth,
@@ -50,21 +36,16 @@ export class OverviewService {
       next(error);
     }
   };
-
-  // Method to fetch all users (paginated)
   public getAllUsers: RequestHandler = async (req, res, next) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const skip = (page - 1) * limit;
-
       const users = await prisma.user.findMany({
         skip,
         take: limit,
       });
-
       const totalUsers = await prisma.user.count();
-
       res.status(200).json({
         users,
         totalUsers,
@@ -75,4 +56,30 @@ export class OverviewService {
       next(error);
     }
   };
+  public fetchTransactions: RequestHandler = async (req, res, next) => {
+    try {
+      const transactions = await prisma.transaction.findMany({
+        include: { order: true },
+      });
+      res.status(200).json({ transactions });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public fetchOrders: RequestHandler = async (req, res, next) => {
+    try {
+      const orders = await prisma.order.findMany({
+        include: {
+          orderItems: {
+            include: { product: true },
+          },
+          user: true,
+        },
+      });
+
+      res.status(200).json({ orders });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

@@ -1053,7 +1053,7 @@
         }
       }
     },
-    "/api/v1/order": {
+    "/api/v1/orders": {
       "post": {
         "summary": "Place a new order",
         "description": "Places a new order for the authenticated user based on the items in their cart.",
@@ -1172,7 +1172,7 @@
         }
       }
     },
-    "/api/v1/orders": {
+    "/api/v1/get-orders": {
       "get": {
         "summary": "Get all orders for a user",
         "description": "Retrieves all orders for the authenticated user.",
@@ -1261,65 +1261,22 @@
     },
     "/api/v1/admin/orders": {
       "get": {
-        "summary": "Get all orders (Admin)",
-        "description": "Retrieves all orders placed by all users, available to Admins only.",
+        "summary": "Fetch all orders for a user",
         "tags": [
-          "Order"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
+          "Orders"
         ],
         "responses": {
           "200": {
-            "description": "Orders retrieved successfully",
+            "description": "List of user orders",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "c3f2f6a2-dac1-47c2-9326-5d457f331b9e"
-                      },
-                      "userId": {
-                        "type": "string",
-                        "example": "7c1f9fba-42f3-4ff2-9220-57a8e4735505"
-                      },
-                      "totalPrice": {
-                        "type": "number",
-                        "example": 299.99
-                      },
-                      "deliveryAddress": {
-                        "type": "string",
-                        "example": "1234 Elm Street"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "example": "2024-10-20T14:48:00.000Z"
-                      },
-                      "orderItems": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "productId": {
-                              "type": "string",
-                              "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
-                            },
-                            "quantity": {
-                              "type": "integer",
-                              "example": 2
-                            },
-                            "price": {
-                              "type": "number",
-                              "example": 149.99
-                            }
-                          }
-                        }
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
                       }
                     }
                   }
@@ -1328,20 +1285,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "An error occurred while fetching the orders"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Internal server error"
           }
         }
       }
@@ -1511,6 +1455,80 @@
             }
           }
         }
+      },
+      "delete": {
+        "summary": "Remove item from cart",
+        "description": "Removes a specified product from the authenticated user's cart.",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "b3a9f1d9-829f-44d5-bc79-7d3837d9b123"
+            },
+            "description": "ID of the product to remove from the cart"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item removed from cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Item removed from cart"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Item not found in cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Item not found in cart"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "An error occurred while removing the item from the cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/overview/stats": {
@@ -1572,91 +1590,156 @@
         }
       }
     },
-    "/api/v1/overview/users": {
+    "/api/v1/admin/transactions": {
       "get": {
-        "summary": "Fetch all users (paginated)",
-        "description": "Fetch all users with pagination, showing id, email, name, and other basic information.",
+        "summary": "Fetch all transactions for a user",
         "tags": [
-          "Overview"
-        ],
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "example": 1
-            },
-            "description": "Page number for pagination"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "example": 10
-            },
-            "description": "Number of users per page"
-          }
+          "Transactions"
         ],
         "responses": {
           "200": {
-            "description": "Paginated list of users",
+            "description": "List of user transactions",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "users": {
+                    "transactions": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "example": "123e4567-e89b-12d3-a456-426614174000"
-                          },
-                          "email": {
-                            "type": "string",
-                            "example": "user@example.com"
-                          },
-                          "firstName": {
-                            "type": "string",
-                            "example": "John"
-                          },
-                          "lastName": {
-                            "type": "string",
-                            "example": "Doe"
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "example": "2023-10-01T12:00:00Z"
-                          },
-                          "isVerified": {
-                            "type": "boolean",
-                            "example": true
-                          },
-                          "userType": {
-                            "type": "string",
-                            "example": "Customer"
-                          }
-                        }
+                        "$ref": "#/components/schemas/Transaction"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/profile": {
+      "get": {
+        "summary": "Get user profile",
+        "description": "Retrieves the authenticated user's profile details.",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "studentId": {
+                      "type": "string",
+                      "example": "123456"
                     },
-                    "totalUsers": {
-                      "type": "integer",
-                      "example": 1500
+                    "email": {
+                      "type": "string",
+                      "example": "user@example.com"
                     },
-                    "currentPage": {
-                      "type": "integer",
-                      "example": 1
+                    "password": {
+                      "type": "string",
+                      "example": "hashedpassword"
                     },
-                    "totalPages": {
-                      "type": "integer",
-                      "example": 150
+                    "avatar": {
+                      "type": "string",
+                      "example": "https://example.com/avatar.jpg"
+                    },
+                    "profileCompleted": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "tokenExpirationTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-08-01T12:34:56Z"
+                    },
+                    "otp": {
+                      "type": "string",
+                      "example": "123456"
+                    },
+                    "emailVerification": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "dateOfBirth": {
+                      "type": "string",
+                      "format": "date",
+                      "example": "2000-01-01"
+                    },
+                    "userName": {
+                      "type": "string",
+                      "example": "johndoe"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "institution": {
+                      "type": "string",
+                      "example": "University of Example"
+                    },
+                    "studentType": {
+                      "type": "string",
+                      "example": "Undergraduate"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "Male"
+                    },
+                    "department": {
+                      "type": "string",
+                      "example": "Computer Science"
+                    },
+                    "level": {
+                      "type": "string",
+                      "example": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "active"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-01T10:00:00Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-07-01T10:00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User profile not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User profile not found"
                     }
                   }
                 }
@@ -1672,7 +1755,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Encounter error"
+                      "example": "An error occurred while retrieving the profile"
                     }
                   }
                 }

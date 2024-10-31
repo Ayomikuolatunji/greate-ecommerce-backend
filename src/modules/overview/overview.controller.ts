@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { OverviewService } from "./overview.service";
 import { AuthMiddleware } from "../../middlewares/auth/authToken";
+import { adminPermission } from "../../middlewares/permission/permission";
 
 export class OverviewRoutes {
   private router: Router;
@@ -16,7 +17,20 @@ export class OverviewRoutes {
     this.router.get(
       "/overview/stats",
       this.authMiddleware.tokenVerification,
+      adminPermission,
       this.overviewService.getOverviewStats
+    );
+    this.router.get(
+      "/admin/orders",
+      this.authMiddleware.tokenVerification,
+      adminPermission,
+      this.overviewService.fetchOrders
+    );
+    this.router.get(
+      "/admin/transactions",
+      this.authMiddleware.tokenVerification,
+      adminPermission,
+      this.overviewService.fetchTransactions
     );
     this.router.get(
       "/users",

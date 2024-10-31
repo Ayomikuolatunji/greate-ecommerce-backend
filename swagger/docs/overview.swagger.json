@@ -65,91 +65,25 @@
                 }
             }
         },
-        "/api/v1/overview/users": {
+        "/api/v1/admin/transactions": {
             "get": {
-                "summary": "Fetch all users (paginated)",
-                "description": "Fetch all users with pagination, showing id, email, name, and other basic information.",
+                "summary": "Fetch all transactions for a user",
                 "tags": [
-                    "Overview"
-                ],
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        },
-                        "description": "Page number for pagination"
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        },
-                        "description": "Number of users per page"
-                    }
+                    "Transactions"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of users",
+                        "description": "List of user transactions",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "users": {
+                                        "transactions": {
                                             "type": "array",
                                             "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string",
-                                                        "example": "123e4567-e89b-12d3-a456-426614174000"
-                                                    },
-                                                    "email": {
-                                                        "type": "string",
-                                                        "example": "user@example.com"
-                                                    },
-                                                    "firstName": {
-                                                        "type": "string",
-                                                        "example": "John"
-                                                    },
-                                                    "lastName": {
-                                                        "type": "string",
-                                                        "example": "Doe"
-                                                    },
-                                                    "createdAt": {
-                                                        "type": "string",
-                                                        "format": "date-time",
-                                                        "example": "2023-10-01T12:00:00Z"
-                                                    },
-                                                    "isVerified": {
-                                                        "type": "boolean",
-                                                        "example": true
-                                                    },
-                                                    "userType": {
-                                                        "type": "string",
-                                                        "example": "Customer"
-                                                    }
-                                                }
+                                                "$ref": "#/components/schemas/Transaction"
                                             }
-                                        },
-                                        "totalUsers": {
-                                            "type": "integer",
-                                            "example": 1500
-                                        },
-                                        "currentPage": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "totalPages": {
-                                            "type": "integer",
-                                            "example": 150
                                         }
                                     }
                                 }
@@ -157,16 +91,144 @@
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/orders": {
+            "get": {
+                "summary": "Fetch all orders for a user",
+                "tags": [
+                    "Orders"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of user orders",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Encounter error"
+                                        "orders": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Order"
+                                            }
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "/api/v1/overview/users": {
+        "get": {
+            "summary": "Fetch all users (paginated)",
+            "description": "Fetch all users with pagination, showing id, email, name, and other basic information.",
+            "tags": [
+                "Overview"
+            ],
+            "parameters": [
+                {
+                    "name": "page",
+                    "in": "query",
+                    "required": false,
+                    "schema": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "description": "Page number for pagination"
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "required": false,
+                    "schema": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "description": "Number of users per page"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Paginated list of users",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "users": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "user@example.com"
+                                                },
+                                                "firstName": {
+                                                    "type": "string",
+                                                    "example": "John"
+                                                },
+                                                "lastName": {
+                                                    "type": "string",
+                                                    "example": "Doe"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-10-01T12:00:00Z"
+                                                },
+                                                "isVerified": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "userType": {
+                                                    "type": "string",
+                                                    "example": "Customer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "totalUsers": {
+                                        "type": "integer",
+                                        "example": 1500
+                                    },
+                                    "currentPage": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "totalPages": {
+                                        "type": "integer",
+                                        "example": 150
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Encounter error"
                                     }
                                 }
                             }
