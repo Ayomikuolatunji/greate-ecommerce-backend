@@ -128,7 +128,7 @@
             }
         }
     },
-    "/api/v1/overview/users": {
+    "/api/v1/admin/users": {
         "get": {
             "summary": "Fetch all users (paginated)",
             "description": "Fetch all users with pagination, showing id, email, name, and other basic information.",

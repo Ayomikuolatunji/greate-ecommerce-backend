@@ -33,7 +33,7 @@ export class OverviewRoutes {
       this.overviewService.fetchTransactions
     );
     this.router.get(
-      "/users",
+      "/admin/users",
       this.authMiddleware.tokenVerification,
       
       this.overviewService.getAllUsers
