@@ -42,7 +42,6 @@ export class AuthRoutes {
     this.router.post("/verify-otp", validate(emailOtpValidation, {}, {}), this.auth.verifyOTP);
     this.router.post(
       "/complete-profile-registration/:id",
-      this.authMiddleware.tokenVerification,
       validate(completeProfileRegistrationValidation, {}, {}),
       this.auth.completeProfileRegistration
     );
