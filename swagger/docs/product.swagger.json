@@ -118,7 +118,7 @@
                 }
             }
         },
-        "/api/v1/products/search": {
+        "/api/v1/search-query": {
             "get": {
                 "tags": [
                     "Products"

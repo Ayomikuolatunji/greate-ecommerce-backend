@@ -24,7 +24,7 @@ export class ProductsRoutes {
 
     this.router.get("/products/:id", this.productService.getProductById);
 
-    this.router.get("/products/search", this.productService.searchProducts);
+    this.router.get("/search-query", this.productService.searchProducts);
   }
 
   public getRoutes() {
