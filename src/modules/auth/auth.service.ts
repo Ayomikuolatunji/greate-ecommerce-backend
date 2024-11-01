@@ -138,7 +138,8 @@ export class UserAuthentication {
           email: findUser.email,
           userId: findUser?.id,
           isVerified: findUser?.isVerified,
-
+          firstName: findUser?.firstName,
+          lastName: findUser?.lastName,
           avatar: findUser?.avatar,
         },
       });
