@@ -22,6 +22,12 @@ export const ENVIRONMENT_VARIABLES = cleanEnv(process.env, {
   GOOGLE_REFRESH_TOKEN: str(),
   G_MAIL: str(),
 
+  // Cloudinary environment variables
+  CLOUDINARY_UPLOAD_PATH: str(),
+  CLOUDINARY_NAME: str(),
+  CLOUDINARY_API_KEY: str(),
+  CLOUDINARY_API_SECRET: str(),
+
   // JWT environment variables
   JWT_SECRET_KEY: str(),
   // Server environment variables

@@ -28,24 +28,30 @@ model User {
 }
 
 model Product {
-    id                String      @id @default(uuid())
+    id                String        @id @default(uuid())
     name              String
     description       String
     price             Float
     size              String
     color             String
     quantity          Int
+    productStatus     ProductStatus @default(ACTIVE)
     salesCoverPicture String
     subImages         String[]
-    createdAt         DateTime    @default(now())
-    updatedAt         DateTime    @default(now())
     cartItems         CartItem[]
     orderItems        OrderItem[]
+    createdAt         DateTime      @default(now())
+    updatedAt         DateTime      @default(now())
 }
 
 enum userType {
     User
     Admin
+}
+
+enum ProductStatus {
+    DELETED
+    ACTIVE
 }
 
 model Cart {

@@ -44,6 +44,10 @@ export class OverviewService {
       const users = await prisma.user.findMany({
         skip,
         take: limit,
+        include: {
+          orders: true,
+          transactions: true,
+        },
       });
       const totalUsers = await prisma.user.count();
       res.status(200).json({
@@ -76,10 +80,10 @@ export class OverviewService {
           user: true,
         },
       });
-
-      res.status(200).json({ orders });
+      const totalSales = await prisma.order.count();
+      res.status(200).json({ orders, totalSales: totalSales });
     } catch (error) {
       next(error);
     }
-  }
+  };
 }

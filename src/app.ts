@@ -7,10 +7,19 @@ import responseTime from "response-time";
 import requestHeaders from "./middlewares/handlers/requestHeaders";
 import errorHandler from "./middlewares/handlers/requestErrorHandler";
 import { pageNotFound } from "./middlewares/errors/404Page";
-
 import { Winston } from "./middlewares/errors/winstonErrorLogger";
 import v1Api from "./routes/v1Route";
 import swaggerDocument from "../swagger/swagger.json";
+import cloudinary from "cloudinary";
+import { ENVIRONMENT_VARIABLES } from "./configurations/config";
+
+
+cloudinary.v2.config({
+  cloud_name: ENVIRONMENT_VARIABLES.CLOUDINARY_NAME,
+  api_key: ENVIRONMENT_VARIABLES.CLOUDINARY_API_KEY,
+  api_secret: ENVIRONMENT_VARIABLES.CLOUDINARY_API_SECRET,
+});
+
 
 const app: Application = express();
 
