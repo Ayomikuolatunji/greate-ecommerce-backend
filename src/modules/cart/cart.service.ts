@@ -25,13 +25,14 @@ export class CartService {
       const existingCartItem = await prisma.cartItem.findFirst({
         where: { cartId: cart.id, productId },
       });
+      let cartQuantity;
       if (existingCartItem) {
-        await prisma.cartItem.update({
+        cartQuantity = await prisma.cartItem.update({
           where: { id: existingCartItem.id },
           data: { quantity: existingCartItem.quantity + quantity },
         });
       } else {
-        await prisma.cartItem.create({
+        cartQuantity = await prisma.cartItem.create({
           data: {
             cartId: cart.id,
             productId,
@@ -40,7 +41,7 @@ export class CartService {
         });
       }
 
-      res.status(200).json({ message: "Item added to cart" });
+      res.status(200).json({ message: "Item added to cart", cartQuantity: quantity.quantity });
     } catch (error) {
       next(error);
     }
@@ -95,4 +96,3 @@ export class CartService {
     }
   };
 }
-
