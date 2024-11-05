@@ -41,7 +41,7 @@ export class CartService {
         });
       }
 
-      res.status(200).json({ message: "Item added to cart", cartQuantity: quantity.quantity });
+      res.status(200).json({ message: "Item added to cart", cartQuantity: quantity, productId });
     } catch (error) {
       next(error);
     }
