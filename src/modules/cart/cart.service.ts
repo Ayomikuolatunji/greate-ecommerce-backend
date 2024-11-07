@@ -48,20 +48,16 @@ export class CartService {
       next(error);
     }
   };
-
   public getUserCart: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.authId;
-
       const cart = await prisma.cart.findFirst({
         where: { userId: userId! },
         include: { items: { include: { product: true } } },
       });
-
       if (!cart) {
         return res.status(404).json({ message: "Cart not found" });
       }
-
       res.status(200).json(cart);
     } catch (error) {
       next(error);

@@ -46,21 +46,16 @@ export class ProductService extends CloudinaryFunctions {
   public editProduct: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { name, description, price, size, color, quantity } = req.body;
-
-      // Type assertion for req.files
+      const { name, description, price, size, color, quantity } = req.body
       const files = req.files as {
         salesCoverPicture?: Express.Multer.File[];
         subImages?: Express.Multer.File[];
       };
-
       let salesCoverPictureUrl: string | undefined = undefined;
-
       if (files.salesCoverPicture) {
         const salesCoverPictureUpload = await this.uploadFile(files.salesCoverPicture[0].path);
         salesCoverPictureUrl = salesCoverPictureUpload.secure_url;
       }
-
       const subImages = files.subImages
         ? await Promise.all(
             files.subImages.map(async (file: Express.Multer.File) => {
@@ -94,7 +89,7 @@ export class ProductService extends CloudinaryFunctions {
   public getAllProducts: RequestHandler = async (req, res, next) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string);
       const skip = (page - 1) * limit;
       const products = await prisma.product.findMany({
         skip,
