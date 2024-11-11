@@ -1,18 +1,30 @@
+// CloudinaryFunctions.ts
+
 import cloudinary, { UploadApiResponse } from "cloudinary";
 import multer from "multer";
 import { InternalServerError } from "../errors/InternalServerError";
 import { ENVIRONMENT_VARIABLES } from "../configurations/config";
+import { Readable } from "stream";
 
 export abstract class CloudinaryFunctions {
-  public async uploadFile(path: string): Promise<UploadApiResponse> {
-    const upload = await cloudinary.v2.uploader.upload(path, {
-      folder: ENVIRONMENT_VARIABLES.CLOUDINARY_UPLOAD_PATH,
-      resource_type: "auto",
+  public async uploadFile(buffer: Buffer): Promise<UploadApiResponse> {
+    return new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.v2.uploader.upload_stream(
+        {
+          folder: ENVIRONMENT_VARIABLES.CLOUDINARY_UPLOAD_PATH,
+          resource_type: "auto",
+        },
+        (error, result) => {
+          if (error || !result) {
+            return reject(new InternalServerError("Error uploading file"));
+          }
+          resolve(result);
+        }
+      );
+
+      // Convert buffer to a readable stream and pipe it to Cloudinary
+      Readable.from(buffer).pipe(uploadStream);
     });
-    if (!upload) {
-      throw new InternalServerError("Error uploading file");
-    }
-    return upload;
   }
 
   public async deleteFile(filePublicId: string) {

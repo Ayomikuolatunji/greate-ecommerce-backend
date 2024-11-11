@@ -3,6 +3,8 @@ import prisma from "../../database/PgDB";
 import { CloudinaryFunctions } from "../../helpers/cloudinary";
 
 export class ProductService extends CloudinaryFunctions {
+  // In your product service or controller
+  // In your product service or controller
   public createProducts: RequestHandler = async (req, res, next) => {
     try {
       const { name, description, price, size, color, quantity } = req.body;
@@ -14,12 +16,12 @@ export class ProductService extends CloudinaryFunctions {
         return res.status(400).json({ error: "salesCoverPicture is required" });
       }
 
-      const salesCoverPictureUpload = await this.uploadFile(files.salesCoverPicture[0].path);
+      const salesCoverPictureUpload = await this.uploadFile(files.salesCoverPicture[0].buffer);
       const salesCoverPictureUrl = salesCoverPictureUpload.secure_url;
       const subImages = files.subImages
         ? await Promise.all(
             files.subImages.map(async (file: Express.Multer.File) => {
-              const uploadResponse = await this.uploadFile(file.path);
+              const uploadResponse = await this.uploadFile(file.buffer);
               return uploadResponse.secure_url;
             })
           )
@@ -37,34 +39,37 @@ export class ProductService extends CloudinaryFunctions {
           subImages,
         },
       });
-
       res.status(201).json({ message: "Product created successfully" });
     } catch (error) {
       next(error);
     }
   };
+
   public editProduct: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { name, description, price, size, color, quantity } = req.body
+      const { name, description, price, size, color, quantity } = req.body;
       const files = req.files as {
         salesCoverPicture?: Express.Multer.File[];
         subImages?: Express.Multer.File[];
       };
       let salesCoverPictureUrl: string | undefined = undefined;
-      if (files.salesCoverPicture) {
-        const salesCoverPictureUpload = await this.uploadFile(files.salesCoverPicture[0].path);
+
+      // Check if `salesCoverPicture` exists and upload it
+      if (files.salesCoverPicture && files.salesCoverPicture[0]) {
+        const salesCoverPictureUpload = await this.uploadFile(files.salesCoverPicture[0].buffer);
         salesCoverPictureUrl = salesCoverPictureUpload.secure_url;
       }
       const subImages = files.subImages
         ? await Promise.all(
-            files.subImages.map(async (file: Express.Multer.File) => {
-              const uploadResponse = await this.uploadFile(file.path);
+            files.subImages.map(async (file) => {
+              const uploadResponse = await this.uploadFile(file.buffer);
               return uploadResponse.secure_url;
             })
           )
         : undefined;
 
+      // Update the product in Prisma
       const updatedProduct = await prisma.product.update({
         where: { id },
         data: {
@@ -85,7 +90,7 @@ export class ProductService extends CloudinaryFunctions {
       next(error);
     }
   };
-  
+
   public getAllProducts: RequestHandler = async (req, res, next) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
