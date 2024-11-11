@@ -34,7 +34,7 @@ export class ProductService extends CloudinaryFunctions {
           price: parseFloat(price),
           size,
           color,
-          quantity,
+          quantity: +quantity,
           salesCoverPicture: salesCoverPictureUrl,
           subImages,
         },
