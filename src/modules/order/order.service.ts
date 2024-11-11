@@ -49,7 +49,7 @@ export class OrderService {
       const userId = req.authId;
       const orders = await prisma.order.findMany({
         where: { userId },
-        include: { orderItems: { include: { product: true } } },
+        include: { user: true, orderItems: { include: { product: true } } },
       });
       res.status(200).json(orders);
     } catch (error) {
