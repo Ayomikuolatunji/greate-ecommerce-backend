@@ -93,4 +93,39 @@ export class CartService {
       next(error);
     }
   };
+  public deleteProductFromCart: RequestHandler = async (req, res, next) => {
+    try {
+      const userId = req.authId;
+      const { productId } = req.body;
+
+      if (!userId || !productId) {
+        throw new BadRequestError("User ID and Product ID are required");
+      }
+
+      const cart = await prisma.cart.findFirst({
+        where: { userId },
+        include: { items: true },
+      });
+
+      if (!cart) {
+        throw new NotFoundError("Cart not found");
+      }
+
+      const item = await prisma.cartItem.findFirst({
+        where: { cartId: cart.id, productId },
+      });
+
+      if (!item) {
+        throw new NotFoundError("Product not found in cart");
+      }
+
+      await prisma.cartItem.delete({
+        where: { id: item.id },
+      });
+
+      res.status(200).json({ message: "Product removed from cart" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

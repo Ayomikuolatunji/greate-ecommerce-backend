@@ -22,6 +22,11 @@ export class CartRoutes {
       this.authMiddleware.tokenVerification,
       this.cartService.deleteCartItem
     );
+    this.router.post(
+      "/delete-cart-product",
+      this.authMiddleware.tokenVerification,
+      this.cartService.deleteProductFromCart
+    );
   }
 
   public getRoutes() {

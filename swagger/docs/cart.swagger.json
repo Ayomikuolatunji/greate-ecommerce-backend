@@ -248,6 +248,82 @@
             }
         }
     },
+    "/api/v1/cart/item/{itemId}": {
+        "delete": {
+            "summary": "Remove item from cart",
+            "description": "Removes a specified item from the authenticated user's cart.",
+            "tags": [
+                "Cart"
+            ],
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "c7b29f1e-9255-44b5-bc79-7d3837d9b123"
+                    },
+                    "description": "ID of the item to remove from the cart"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Item removed from cart",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Item removed from cart"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Item not found in cart",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Item not found in cart"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "An error occurred while removing the item from the cart"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     "components": {
         "securitySchemes": {
             "bearerAuth": {
