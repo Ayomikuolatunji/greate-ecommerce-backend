@@ -24,8 +24,6 @@ const combinedSwagger = {
   }
 };
 
-// Log combined paths to verify
-console.log("Combined Paths:", JSON.stringify(combinedSwagger.paths, null, 2));
 
 fs.writeFileSync(path.join(__dirname, 'swagger.json'), JSON.stringify(combinedSwagger, null, 2));
 console.log('Combined Swagger JSON created successfully.');
