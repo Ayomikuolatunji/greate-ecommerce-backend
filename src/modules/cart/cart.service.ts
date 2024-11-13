@@ -96,7 +96,7 @@ export class CartService {
   public deleteProductFromCart: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.authId;
-      const { productId } = req.body;
+      const { productId } = req.params;
 
       if (!userId || !productId) {
         throw new BadRequestError("User ID and Product ID are required");
