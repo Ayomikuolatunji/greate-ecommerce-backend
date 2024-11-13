@@ -248,7 +248,7 @@
             }
         }
     },
-    "/api/v1/cart/item/{productId}": {
+    "/api/v1/delete-cart-product/{productId}": {
         "delete": {
             "summary": "Remove item from cart",
             "description": "Removes a specified item from the authenticated user's cart.",

@@ -23,7 +23,7 @@ export class CartRoutes {
       this.cartService.deleteCartItem
     );
     this.router.delete(
-      "/cart/item/:productId",
+      "/delete-cart-product/:productId",
       this.authMiddleware.tokenVerification,
       this.cartService.deleteProductFromCart
     );
