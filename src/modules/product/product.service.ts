@@ -99,6 +99,9 @@ export class ProductService extends CloudinaryFunctions {
       const products = await prisma.product.findMany({
         skip,
         take: limit,
+        where:{
+          productStatus: "ACTIVE"
+        }
       });
       const totalProducts = await prisma.product.count();
       res.status(200).json({
