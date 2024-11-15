@@ -92,7 +92,7 @@ export class OrderService {
     const makePayment = await axios({
       method: "POST",
       headers: {
-        Authorization: `Bearer pk_test_137363c0ed54eb486c506dfd1ed3fe32ed0a9ef6`,
+        Authorization: `Bearer sk_test_7d2b511b172050df82a7ab933d24d4742eb12a47`,
         "Content-Type": "application/json",
       },
       data: JSON.stringify({
