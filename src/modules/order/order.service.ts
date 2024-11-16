@@ -89,16 +89,23 @@ export class OrderService {
     if (!user) {
       throw new BadRequestError("user not found");
     }
+    const callback_url =
+      ENVIRONMENT_VARIABLES.NODE_ENV === "development"
+        ? `http://localhost:3000/order/${req.body.orderId}`
+        : ENVIRONMENT_VARIABLES.NODE_ENV === "staging"
+        ? `https://www.4tk.shop/order/${req.body.orderId}`
+        : `https://www.4tk.shop/order/${req.body.orderId}`;
+        
     const makePayment = await axios({
       method: "POST",
       headers: {
-        Authorization: `Bearer sk_test_7d2b511b172050df82a7ab933d24d4742eb12a47`,
+        Authorization: `Bearer sk_test_166f356047843ffbbfafa20e3b7710f0c68651b4`,
         "Content-Type": "application/json",
       },
       data: JSON.stringify({
         email: user.email,
-        amount: order.totalPrice * 100,
-        callback_url: "http://localhost:5173/",
+        amount: order.totalPrice,
+        callback_url: callback_url,
         currency: "NGN",
         transaction_charge: 10,
         metadata: {
