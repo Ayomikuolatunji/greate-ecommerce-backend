@@ -54,6 +54,8 @@ async function main() {
       },
     });
   }
+
+  console.log(await prisma.transaction.findMany({}));
 }
 main()
   .then(async () => {

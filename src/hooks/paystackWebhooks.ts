@@ -19,7 +19,7 @@ class PaystackWebhookHandler {
               amount: event?.data?.amount / 100,
               userId: event.data.metadata?.userId,
               txref: event?.data?.reference,
-              orderId: event.dat.metadata?.orderId,
+              orderId: event.data.metadata?.orderId,
               status: "SUCCESS",
               paymentMethod: event?.data.channel.toUpperCase(),
             },

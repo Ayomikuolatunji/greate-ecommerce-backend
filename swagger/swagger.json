@@ -205,7 +205,7 @@
         }
       }
     },
-    "/api/v1/complete-profile-registration": {
+    "/api/v1/complete-profile-registration/:id": {
       "post": {
         "summary": "Complete profile registration",
         "description": "Updates the user's profile information after email verification is completed.",
@@ -799,7 +799,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -830,20 +830,21 @@
                   },
                   "salesCoverPicture": {
                     "type": "string",
-                    "example": "https://example.com/image.jpg"
+                    "format": "binary"
                   },
                   "subImages": {
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "example": "https://example.com/subimage.jpg"
+                      "format": "binary"
                     }
                   }
                 },
                 "required": [
                   "name",
                   "price",
-                  "quantity"
+                  "quantity",
+                  "salesCoverPicture"
                 ]
               }
             }
@@ -892,6 +893,296 @@
                     "message": {
                       "type": "string",
                       "example": "Encounter error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/edit-products/{productId}": {
+      "put": {
+        "summary": "Edit an existing product (Admin)",
+        "description": "Updates the details of an existing product by its ID. Only accessible by Admin users.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the product to edit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Updated Product Name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Updated product description."
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 39.99
+                  },
+                  "size": {
+                    "type": "string",
+                    "example": "L"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Blue"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "example": 50
+                  },
+                  "salesCoverPicture": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "subImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing required fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Validation error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Encounter error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/delete-products/{productId}": {
+      "delete": {
+        "summary": "Delete a product (Admin)",
+        "description": "Deletes an existing product by its ID. Only accessible by Admin users.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the product to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Encounter error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search-query": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Search for products by name or description",
+        "description": "Search products by a query string, with optional pagination",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search term to look up products by name or description."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination. Defaults to 1."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of results per page. Defaults to 10."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of matching products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "totalProducts": {
+                      "type": "integer",
+                      "description": "Total number of matching products"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Current page of the results"
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages available"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request due to missing search query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Search query is required"
                     }
                   }
                 }

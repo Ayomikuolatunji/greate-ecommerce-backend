@@ -12,11 +12,10 @@ class CreateDBConnect {
     try {
       await this.db.$connect();
       console.log("Connected to database successfully");
-      const server = app.listen(ENVIRONMENT_VARIABLES.PORT, () =>
+      app.listen(ENVIRONMENT_VARIABLES.PORT, () =>
         console.log(`Server is running on port ${ENVIRONMENT_VARIABLES.PORT}`)
       );
-      server.keepAliveTimeout = 600 * 1000;
-      server.headersTimeout = 65 * 1000;
+
     } catch (error: any) {
       console.error("Failed to connect to database", error.message);
     }
