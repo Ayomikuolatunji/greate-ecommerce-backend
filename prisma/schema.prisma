@@ -81,6 +81,7 @@ model Order {
     orderItems      OrderItem[]
     totalPrice      Float
     deliveryAddress String
+    phoneNumber     String?  
     status          OrderStatus   @default(PENDING)
     createdAt       DateTime      @default(now())
     updatedAt       DateTime      @default(now())

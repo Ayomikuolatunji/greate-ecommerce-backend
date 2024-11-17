@@ -8,7 +8,7 @@ export class OrderService {
   public placeOrder: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.authId;
-      const { deliveryAddress } = req.body;
+      const { deliveryAddress, phoneNumber } = req.body;
       const cart = await prisma.cart.findFirst({
         where: { userId: userId! },
         include: { items: { include: { product: true } } },
