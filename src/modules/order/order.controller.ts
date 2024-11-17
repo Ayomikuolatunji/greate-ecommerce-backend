@@ -20,7 +20,7 @@ export class OrderRoutes {
       this.authMiddleware.tokenVerification,
       this.orderService.placeOrder
     );
-    
+
     this.router.post(
       "/make-payment",
       this.authMiddleware.tokenVerification,
@@ -39,6 +39,8 @@ export class OrderRoutes {
       this.orderService.getAllOrders
     );
     this.router.delete("/orders/:id", this.orderService.deleteOrder);
+
+    this.router.get("/orders/:id", this.orderService.getOrder);
   }
 
   public getRoutes() {

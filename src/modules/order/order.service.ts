@@ -57,6 +57,18 @@ export class OrderService {
     }
   };
 
+  public getOrder: RequestHandler = async (req, res, next) => {
+    try {
+      const orders = await prisma.order.findUnique({
+        where: { id: req.params.id },
+        include: { user: true, orderItems: { include: { product: true } } },
+      });
+      res.status(200).json(orders);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getAllOrders: RequestHandler = async (req, res, next) => {
     try {
       const orders = await prisma.order.findMany({
@@ -95,7 +107,7 @@ export class OrderService {
         : ENVIRONMENT_VARIABLES.NODE_ENV === "staging"
         ? `https://www.4tk.shop/order/${req.body.orderId}`
         : `https://www.4tk.shop/order/${req.body.orderId}`;
-        
+
     const makePayment = await axios({
       method: "POST",
       headers: {
